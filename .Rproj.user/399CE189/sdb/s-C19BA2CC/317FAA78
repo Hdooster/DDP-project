@@ -1,0 +1,16 @@
+{
+    "contents" : "library(shiny)\nlibrary(reshape2)\ntotal_economicdamage_peryear <- read.csv(\"total_economicdamage_peryear.csv\", sep=\",\", header=T)\ntotal_fatalities_peryear <- read.csv(\"total_fatalities_peryear.csv\", sep=\",\", header=T)\ntotal_injuries_peryear <- read.csv(\"total_injuries_peryear.csv\", sep=\",\", header=T)\n\ntotal_economicdamage_peryear <- total_economicdamage_peryear[,-1]\ntotal_fatalities_peryear <- total_fatalities_peryear[,-1]\ntotal_injuries_peryear <- total_injuries_peryear[,-1]\n\nevtypes <<- sort(unique(total_economicdamage_peryear$event_class))\n\n#setting the data straight\ndamageyear <- merge(total_economicdamage_peryear,total_fatalities_peryear,by=(c(\"year\",\"event_class\")))\ncolnames(damageyear) <- c(\"year\",\"event_class\",\"eco\",\"fat\")\ndamageyear <- merge(damageyear,total_injuries_peryear,by=(c(\"year\",\"event_class\")))\ncolnames(damageyear) <- c(\"year\",\"event_class\",\"eco\",\"fat\",\"injuries\")\n\n\ndata <- damageyear\n\n## Define a server for the Shiny app\nshinyServer(function(input, output) {\n  \n  \n  \n  \n  dataInput <- reactive({\n    dcast_var <<- ifelse(input$ecoinjfat==\"Million USD\",'eco',ifelse(input$ecoinjfat==\"Injuries\",'injuries','fat'))\n    data2 <- dcast(data,year ~ event_class,value.var=dcast_var)\n    data2[is.na(data2)] <- 0\n    \n    reactdata <- subset(data2, subset=(year == input$year))\n    as.matrix(reactdata)\n  })\n \n  output$finalPlot <- renderPlot({\n    \n    ## Render a barplot\n    barplot(dataInput(),\n            main=paste(input$evtype, \"in\", input$year),\n            ylab=ifelse(dcast_var=='eco',\"USD\",\"Persons\"),\n            xlab=\"Event Type\")\n  })\n})",
+    "created" : 1414335542146.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1210081714",
+    "id" : "317FAA78",
+    "lastKnownWriteTime" : 1414350085,
+    "path" : "~/Computational Scientist/Studiemateriaal/Johns Hopkins University Data Science Course Track/9 data products/SHINY PROJECT/DDP-project/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

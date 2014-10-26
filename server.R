@@ -18,29 +18,28 @@ colnames(damageyear) <- c("year","event_class","eco","fat","injuries")
 
 
 data <- damageyear
-data2 <- dcast(data,year ~ event_class)
-data2[is.na(data2)] <- 0
 
 ## Define a server for the Shiny app
 shinyServer(function(input, output) {
   
-#  output$evtypeControls <- renderUI({
-#    if(1) {
-#      checkboxGroupInput('evtypes', 'Event types', evtypes, selected=evtypes)
-#    }
-#  })
-
+  
+  
+  
   dataInput <- reactive({
+    dcast_var <<- ifelse(input$ecoinjfat=="Million USD",'eco',ifelse(input$ecoinjfat=="Injuries",'injuries','fat'))
+    data2 <- dcast(data,year ~ event_class,value.var=dcast_var)
+    data2[is.na(data2)] <- 0
+    
     reactdata <- subset(data2, subset=(year == input$year))
     as.matrix(reactdata)
   })
  
-  output$plot1 <- renderPlot({
+  output$finalPlot <- renderPlot({
     
     ## Render a barplot
     barplot(dataInput(),
             main=paste(input$evtype, "in", input$year),
-            ylab="Consumption (in EUR)",
-            xlab="Weeks (Jan to Dec)")
+            ylab=ifelse(dcast_var=='eco',"USD","Persons"),
+            xlab="Event Type")
   })
 })

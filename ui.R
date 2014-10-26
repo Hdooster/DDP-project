@@ -15,15 +15,15 @@ shinyUI(
       # Define the sidebar with one input
       sidebarPanel(
           
-        selectInput("evtype", "Type:",
-                    choices=colnames(data2[,-1])),
+        selectInput("ecoinjfat", "Type of damage:",
+                    choices=c("Economic","Injuries","Casualties")),
         selectInput("year", "Year:",
                     choices=c(1950:2011))
       ),
         
       # Create a spot for the barplot
       mainPanel(
-        plotOutput("plot1")
+        plotOutput("finalPlot")
         )
       )
     )
