@@ -23,7 +23,12 @@ shinyUI(
         
       # Create a spot for the barplot
       mainPanel(
-        plotOutput("finalPlot")
+        plotOutput("finalPlot"),
+        tabPanel("About",
+                 mainPanel(
+                   includeMarkdown("LICENSE.txt")
+                 )
+        )
         )
       )
     )
