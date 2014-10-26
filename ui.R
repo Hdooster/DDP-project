@@ -26,7 +26,7 @@ shinyUI(
         plotOutput("finalPlot"),
         tabPanel("About",
                  mainPanel(
-                   includeMarkdown("LICENSE.txt")
+                   includeText("LICENSE.txt")
                  )
         )
         )

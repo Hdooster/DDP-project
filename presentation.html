@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Storm Destruction</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Storm Destruction">
+  <meta name="author" content="Hendrik D'Oosterlinck">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Storm Destruction</h1>
+    <h2></h2>
+    <p>Hendrik D'Oosterlinck<br/>Computational Scientist</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Description</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This is my Slidify presentation for a Storm Destruction analysis app I wrote in Shiny. The app was written as a submission for the &#39;Developing Data Products&#39; Course Project of the so-titled Coursera course, made by John Hopkins University.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Details</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The data was taken from the NOAA Storm Database. The database tracks characteristics of major storms and weather events in the United States, including when and where they occur, as well as estimates of any fatalities, injuries, and property damage. </p>
+
+<p>Building further upon my project submission for &#39;Reproducible Research&#39; the data is aggregated, event types are grouped, and an interactive bar graph showing damage of a type and year (given by user input) is produced.</p>
+
+<pre><code class="r">total_economicdamage_peryear &lt;- read.csv(&quot;total_economicdamage_peryear.csv&quot;, sep=&quot;,&quot;, header=T)
+total_fatalities_peryear &lt;- read.csv(&quot;total_fatalities_peryear.csv&quot;, sep=&quot;,&quot;, header=T)
+total_injuries_peryear &lt;- read.csv(&quot;total_injuries_peryear.csv&quot;, sep=&quot;,&quot;, header=T)
+
+#setting the data straight
+damageyear &lt;- merge(total_economicdamage_peryear[,-1],total_fatalities_peryear[,-1],by=(c(&quot;year&quot;,&quot;event_class&quot;)))
+damageyear &lt;- merge(damageyear,total_injuries_peryear[,-1],by=(c(&quot;year&quot;,&quot;event_class&quot;)))
+colnames(damageyear) &lt;- c(&quot;year&quot;,&quot;event_class&quot;,&quot;eco&quot;,&quot;fat&quot;,&quot;injuries&quot;)
+evtypes &lt;&lt;- sort(unique(damageyear$event_class))
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The data was written into three csv files which were read in and melted using dcast from the package &#39;melt&#39;, with melted values being the economic damage, injuries or casulties resulting from weather events.</p>
+
+<p><img src="presentation-figure/figure1.png" alt="Alt"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>To-do&#39;s</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Aggregation: Instead of year per year, use a slider to select desired years and sum up the data.</li>
+<li>Mapping: a package for a US map exists, so this can be implemented. The data can be shown per state as a heatmap of some sort.</li>
+<li>Splitting: Weather event types should be checked and combined with a checkbox, and the data can be summed up like this. </li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Conclusion</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Having performed the project a while after the quizzes and doing 3 courses at the same time, I&#39;ve noticed I had trouble remembering where and how to do Shiny and Slidify things. Basic stuff needed repeating, and this course project made me do it, which is pretty good actually.</li>
+<li>Further improvements are easily made once the groundwork for Shiny and Slidify are layed out and after a bit of experience. </li>
+<li>My job centers around sparse high-dimensional data which often is very difficult to visualize or get an intuitive grasp on. I can start using this know-how to make the data at my job stand out.</li>
+<li>Once basic levels of Markdown, Shiny and Slidify are known, it all reverts back to the same skill: abstract Googling skills.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Description'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Details'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Example'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='To-do&#39;s'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Conclusion'>
+         5
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
